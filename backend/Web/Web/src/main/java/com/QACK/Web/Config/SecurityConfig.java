@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.QACK.Web.jwt.AuthEntryPointJwt;
 import com.QACK.Web.jwt.AuthTokenFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -45,7 +46,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/h2-console/**").permitAll()
 				.requestMatchers("/signin").permitAll().anyRequest().authenticated());
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
+  		http.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
 		// http.httpBasic(withDefaults());
 		http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 		http.csrf(csrf -> csrf.disable());
