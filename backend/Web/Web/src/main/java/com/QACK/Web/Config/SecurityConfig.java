@@ -63,8 +63,8 @@ public class SecurityConfig {
 	@Bean
 	CommandLineRunner initData(UserDetailsService userDetailsService) {
 		return args -> {
-			UserDetails user1 = User.withUsername("user1").password(passwordEncoder().encode("password1")).roles("USER")
-					.build();
+			UserDetails user1 = User.withUsername("user1").password(passwordEncoder().encode("password1"))
+					.roles("QA", "USER").build();
 			UserDetails admin = User.withUsername("admin").password(passwordEncoder().encode("adminPass"))
 					.roles("ADMIN").build();
 

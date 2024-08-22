@@ -26,22 +26,20 @@ public class PermissionService {
 	}
 	
 	public Permission findById( Integer id ) {
-		Optional<Permission> perm = permissionRepository.findById(id);
-		return perm.orElseThrow(() -> new ResourceNotFoundException(id) );
+		return permissionRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException(id, "Permission") );
 	}
 	
 	public Permission insert(Permission perm) {
 		perm.verifyData();
 		return permissionRepository.save( perm );			
-		
 	}
 	
 	public void delete(Integer id) {
 		try {
-			
 			permissionRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException( id, "Permission" );
 		} catch (DataIntegrityViolationException e) {
 			throw new DataBaseException(e.getMessage());
 		}
@@ -53,7 +51,7 @@ public class PermissionService {
 			obj.updateData( perm );
 			return permissionRepository.save( obj );
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException( id );
+			throw new ResourceNotFoundException( id, "Permission" );
 		}
 	}
 	

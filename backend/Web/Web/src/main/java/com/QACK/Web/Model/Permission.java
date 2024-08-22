@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,6 +29,9 @@ public class Permission extends QACKUtil implements Serializable{
     private Boolean delete;
     private Boolean exportReport;
     private Boolean comment;
+    
+    @OneToMany(mappedBy = "permission")
+    private List<Role> roles;
     
 	public Permission() {}
 
@@ -54,6 +58,7 @@ public class Permission extends QACKUtil implements Serializable{
 		this.comment = obj.getComment();
 	}
 	
+	@Override
 	public List<Object> attributesToList(){
 		try {			
 			return List.of(this.description,

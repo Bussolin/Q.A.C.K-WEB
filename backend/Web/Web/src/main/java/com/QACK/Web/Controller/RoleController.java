@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.QACK.Web.Model.Role;
+import com.QACK.Web.Model.DTO.RoleDTO;
 import com.QACK.Web.Services.RoleService;
 
 
@@ -29,38 +30,38 @@ public class RoleController {
 	private RoleService roleService;
 	
 	@GetMapping()
-	public ResponseEntity<List<Role>> findAll() {
-		List<Role> role = roleService.findAll();
-		return ResponseEntity.ok().body( role );
+	public ResponseEntity<List<RoleDTO>> findAll() {
+		List<RoleDTO> roles = roleService.findAll();
+		return ResponseEntity.ok().body( roles );
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Role> findById(@PathVariable(value ="id")  Integer id) {
+	public ResponseEntity<RoleDTO> findById(@PathVariable  Integer id) {
 		Role role = roleService.findById( id );
-		return ResponseEntity.ok().body( role );
+		return ResponseEntity.ok().body( role.toRoleDto() );
 	}
 	
 	@PostMapping()
-	public ResponseEntity<Role> insert(@RequestBody Role role ) {
+	public ResponseEntity<RoleDTO> insert(@RequestBody RoleDTO roleDTO ) {
 		
-		role = roleService.insert(role);
+		Role role = roleService.insert( roleDTO.getName(), roleDTO.getPermissionId() );
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(role.getId()).toUri();
 		
-		return ResponseEntity.created( uri ).body(role);
+		return ResponseEntity.created( uri ).body(role.toRoleDto());
 	}
 	
 	@DeleteMapping( value = "/{id}")
 	@ResponseStatus( value = HttpStatus.NO_CONTENT )
-	public void delete(@PathVariable(value="id") Integer id){
+	public void delete(@PathVariable Integer id){
 		roleService.delete( id );	
 	}
 	
 	@PutMapping( value = "/{id}" )
-	public ResponseEntity<Role> update( @PathVariable(value="id") Integer id,
-											  @RequestBody Role role){
-		role = roleService.update( id, role );
-		return ResponseEntity.ok().body( role );
+	public ResponseEntity<RoleDTO> update( @PathVariable Integer id,
+											  @RequestBody RoleDTO roleDTO){
+		Role role = roleService.update( id, roleDTO );
+		return ResponseEntity.ok().body( role.toRoleDto() );
 	}
 	
 }
